@@ -1,0 +1,13 @@
+name: stumpy_tga
+version: 0.1.0
+
+authors:
+  - unn4m3d <smelnikov871@gmail.com>
+
+dependencies:
+  stumpy_core:
+    github: l3kn/stumpy_core
+
+crystal: 0.21.0
+
+license: MIT

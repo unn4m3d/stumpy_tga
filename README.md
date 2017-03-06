@@ -8,8 +8,8 @@ Only reading is supported.
 
 ## Interface
 
-`StumpyTGA.read(file) : Canvas` - Read TGA file
-`StumpyTGA.read_raw(file) : StumpyTGA::TGA` - Read a TGA file into special structure
+* `StumpyTGA.read(file) : Canvas` - Read TGA file
+* `StumpyTGA.read_raw(file) : StumpyTGA::TGA` - Read a TGA file into special structure
 
 ## Installation
 

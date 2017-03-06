@@ -2,7 +2,9 @@
 
 TGA (Targa) files reader and writer designed for use with [stumpy_core](https://github.com/l3kn/stumpy_core)
 
-Supports only types 1, 2, 9 and 10 (Color mapped or not, with RunLength encoding or without) with pixel depth 16, 24 and 32
+Supports only types 1, 2, 9 and 10 (Color mapped or not, with RunLength encoding or without) with pixel depth 16, 24 and 32.
+
+Only reading is supported.
 ## Installation
 
 Add this to your application's `shard.yml`:

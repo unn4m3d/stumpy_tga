@@ -5,6 +5,12 @@ TGA (Targa) files reader and writer designed for use with [stumpy_core](https://
 Supports only types 1, 2, 9 and 10 (Color mapped or not, with RunLength encoding or without) with pixel depth 16, 24 and 32.
 
 Only reading is supported.
+
+## Interface
+
+`StumpyTGA.read(file) : Canvas` - Read TGA file
+`StumpyTGA.read_raw(file) : StumpyTGA::TGA` - Read a TGA file into special structure
+
 ## Installation
 
 Add this to your application's `shard.yml`:

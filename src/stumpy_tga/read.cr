@@ -64,6 +64,31 @@ module StumpyTGA
     end
   end
 
+  protected def self.parse_color_map(offset, esize, bytes)
+    map = {} of UInt64 => RGBA
+    bytesize = (esize/8.0).ceil.to_i64
+    idx = offset.to_u64
+    bytes.each_slice bytesize, reuse: true do |sl|
+      map[idx] = bytes_to_rgba sl, esize
+      idx += 1
+    end
+    map
+  end
+
+  protected def self.read_int_le(io, len)
+    bytes = Bytes.new((len/8.0).ceil.to_u64)
+    io.read_fully(len)
+    parse_int_le bytes
+  end
+
+  protected def self.parse_int_le(bytes)
+    int = 0u64
+    bytes.each_with_index do |e,i|
+      int |= (e << i*8)
+    end
+    int
+  end
+
   def self.read_raw(file : String)
     File.open(file) do |io|
       # First, read header
@@ -111,17 +136,37 @@ module StumpyTGA
         raise "Unsupported image type #{header.image_type}"
       end
 
-      TGA.new image_data,
-        header.image.width,
-        header.image.height,
-        header.image.pixel_depth,
-        header.image.x_origin,
-        header.image.y_origin,
-        image_id
-    end
+      if header.image_type & 2 == 2 # If RGB image
+        TGA.new image_data,
+          header.image.width,
+          header.image.height,
+          header.image.pixel_depth,
+          header.image.x_origin,
+          header.image.y_origin,
+          image_id
+      else
+        cm_offset = header.color_map.index
+        cm_elen = header.color_map.entry_size
+        cm = parse_color_map cm_offset, cm_elen, color_map
 
-    def read(file)
-      read_raw(file).canvas
+        buffer = Array(RGBA).new(size, RGBA.new(0u16,0u16,0u16,0u16))
+
+        idx = 0
+        image_data.each_slice(bytes_cnt) do |sl|
+          buffer[idx] = cm[parse_int_le sl]
+        end
+        TGA.new buffer,
+          header.image.width,
+          header.image.height,
+          header.image.pixel_depth,
+          header.image.x_origin,
+          header.image.y_origin,
+          image_id
+      end
     end
+  end
+
+  def read(file)
+    read_raw(file).canvas
   end
 end

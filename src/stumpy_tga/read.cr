@@ -166,7 +166,7 @@ module StumpyTGA
     end
   end
 
-  def read(file)
+  def self.read(file)
     read_raw(file).canvas
   end
 end

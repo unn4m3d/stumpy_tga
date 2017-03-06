@@ -1,5 +1,7 @@
 # stumpy_tga
 
+**WORK IN PROGRESS**
+
 TGA (Targa) files reader <s>and writer</s> designed for use with [stumpy_core](https://github.com/l3kn/stumpy_core)
 
 Supports only types 1, 2, 9 and 10 (Color mapped or not, with RunLength encoding or without) with pixel depth 16, 24 and 32.

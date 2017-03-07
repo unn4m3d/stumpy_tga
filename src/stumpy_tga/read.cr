@@ -7,7 +7,9 @@ module StumpyTGA
   BYTE_ORDER = IO::ByteFormat::LittleEndian
 
   def self.dbg(str)
-    puts str if ENV["DBG"]?
+    {% if flag?(:debug) %}
+      puts str if ENV["DBG"]?
+    {% end %}
   end
 
   protected def self.read_runlength_packet(io, isize)

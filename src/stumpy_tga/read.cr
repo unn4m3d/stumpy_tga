@@ -12,7 +12,7 @@ module StumpyTGA
 
   protected def self.read_runlength_packet(io, isize)
     header = io.read_bytes(UInt8, BYTE_ORDER)
-    size = header & 0x7F
+    size = (header & 0x7F) + 1
     if header & 0x80 == 0x80
       # This is RunLength packet
       dbg "Read RLP #{size} at #{io.pos - 1}"
@@ -112,10 +112,12 @@ module StumpyTGA
       bytes_cnt = (header.image.pixel_depth / 8.0).ceil.to_u64
       dbg "Depth is #{header.image.pixel_depth}"
       dbg "Bytes per pixel : #{bytes_cnt}"
-
+      dbg "Bits per color map entry : #{header.color_map.entry_size}"
+      dbg "Image ID : #{image_id}"
       # 2. Calculate image size
       size = header.image.width * header.image.height
       dbg "Size is #{size} (#{header.image.width}x#{header.image.height})"
+      dbg "Origin is #{header.image.x_origin} x #{header.image.y_origin}"
       # 3. Read Image data
       image_data = Bytes.new(size.to_u64 * bytes_cnt)
       dbg "Buf size is #{size.to_u64 * bytes_cnt}"
